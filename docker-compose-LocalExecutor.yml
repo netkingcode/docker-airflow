@@ -2,13 +2,15 @@ version: '2.1'
 services:
     postgres:
         image: postgres:9.6
+        ports:
+            - "25432:5432"
         environment:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
 
     webserver:
-        image: puckel/docker-airflow:1.10.4
+        image: netkingcode/docker-airflow:latest
         restart: always
         depends_on:
             - postgres
@@ -20,7 +22,7 @@ services:
             # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         ports:
-            - "8080:8080"
+            - "18080:8080"
         command: webserver
         healthcheck:
             test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
